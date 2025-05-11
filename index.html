@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MySips | Your Favorite Drinks</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>🥤 MySips</h1>
+    <p>Your favorite drinks, one sip at a time.</p>
+  </header>
+
+  <section class="promo">
+    <h2>🎁 Free Drink!</h2>
+    <p>Buy 3 drinks and get the next one free!</p>
+  </section>
+
+  <main class="product-grid">
+    <h2>Soda</h2>
+    <div class="product" data-name="Coca Cola" data-price="1.00">
+      <h3>Coca Cola</h3>
+      <p>$1.00</p>
+      <button onclick="addToCart(this)">Add to Cart</button>
+    </div>
+    <div class="product" data-name="Dr Pepper" data-price="1.00">
+      <h3>Dr Pepper</h3>
+      <p>$1.00</p>
+      <button onclick="addToCart(this)">Add to Cart</button>
+    </div>
+    <div class="product" data-name="Sprite" data-price="0.75">
+      <h3>Sprite</h3>
+      <p>$0.75</p>
+      <button onclick="addToCart(this)">Add to Cart</button>
+    </div>
+
+    <h2>Refreshers</h2>
+    <div class="product" data-name="Prime" data-price="1.25">
+      <h3>Prime</h3>
+      <p>$1.25</p>
+      <button onclick="addToCart(this)">Add to Cart</button>
+    </div>
+    <div class="product" data-name="Lemonade" data-price="0.75">
+      <h3>Lemonade</h3>
+      <p>$0.75</p>
+      <button onclick="addToCart(this)">Add to Cart</button>
+    </div>
+    <div class="product" data-name="Iced Tea" data-price="1.00">
+      <h3>Iced Tea</h3>
+      <p>$1.00</p>
+      <button onclick="addToCart(this)">Add to Cart</button>
+    </div>
+
+    <h2>Dairy</h2>
+    <div class="product" data-name="Chocolate Milk" data-price="0.75">
+      <h3>Chocolate Milk</h3>
+      <p>$0.75</p>
+      <button onclick="addToCart(this)">Add to Cart</button>
+    </div>
+
+    <h2>Water</h2>
+    <div class="product" data-name="Water" data-price="0.25">
+      <h3>Water</h3>
+      <p>$0.25</p>
+      <button onclick="addToCart(this)">Add to Cart</button>
+    </div>
+  </main>
+
+  <section class="cart">
+    <h2>🛒 Cart</h2>
+    <ul id="cart-items"></ul>
+    <p><strong>Total:</strong> $<span id="total">0.00</span></p>
+    <button onclick="checkout()">Checkout</button>
+  </section>
+
+  <section class="admin-login">
+    <h2>🔒 Control Panel Login</h2>
+    <input type="password" id="admin-password" placeholder="Enter admin password">
+    <button onclick="loginAdmin()">Login</button>
+  </section>
+
+  <section class="control-panel" style="display:none;">
+    <h2>📋 Order Tracker</h2>
+    <ul id="order-history"></ul>
+    <h3>💰 Total Revenue: $<span id="money-tracker">0.00</span></h3>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 MySips. Made with 💧</p>
+  </footer>
+
+  <script>
+    let total = 0;
+    let orders = 0;
+    let revenue = 0;
+
+    function addToCart(button) {
+      const product = button.parentElement;
+      const name = product.dataset.name;
+      const price = parseFloat(product.dataset.price);
+
+      const cartItems = document.getElementById("cart-items");
+      const newItem = document.createElement("li");
+      newItem.textContent = `${name} - $${price.toFixed(2)}`;
+      cartItems.appendChild(newItem);
+
+      total += price;
+      orders++;
+      document.getElementById("total").textContent = total.toFixed(2);
+
+      if (orders === 3) {
+        alert("🎉 You've earned a free drink on your next order!");
+      }
+    }
+
+    function checkout() {
+      if (total === 0) return;
+      const location = prompt("Where should we deliver your drinks?");
+      const time = prompt("What time should we deliver them?");
+      if (!location || !time) return;
+
+      const orderSummary = `Order of $${total.toFixed(2)} to ${location} at ${time}`;
+      const history = document.getElementById("order-history");
+      const entry = document.createElement("li");
+      entry.textContent = orderSummary;
+      history.appendChild(entry);
+
+      revenue += total;
+      document.getElementById("money-tracker").textContent = revenue.toFixed(2);
+
+      total = 0;
+      orders = 0;
+      document.getElementById("total").textContent = "0.00";
+      document.getElementById("cart-items").innerHTML = "";
+    }
+
+    function loginAdmin() {
+      const input = document.getElementById("admin-password").value;
+      if (input === "thisisliterallythecontrolpanelpasswordbrooo.") {
+        document.querySelector(".control-panel").style.display = "block";
+      } else {
+        alert("Incorrect password.");
+      }
+    }
+  </script>
+</body>
+</html>
